@@ -14,6 +14,8 @@ var server = http.createServer(function (request, response){
   }).listen(PORT);
 console.log("Server running at http://localhost:%s", PORT)
 
+
+
 //4. Function that handels the reading of files and merge in value
 	//read from file and get a string
 		//merge value into string
