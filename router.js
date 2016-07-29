@@ -1,22 +1,32 @@
-
+var querystring = require ("querystring");
 var Profile = require("./profile.js");
 var renderer = require("./renderer.js")
-
+var commonHeaders = "{'Content-Type': 'text/html'}"
 
 
 // Handel HTTP route GET / and POST i.e. Home
 function home(request, response){
-  //if url == "/...nothing..." && GET
+  //if url == "/...nothing..."
   if (request.url === "/") {
-		//show search field
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    renderer.view("header", {}, response);
-    renderer.view("search", {}, response);
-    renderer.view("footer", {}, response);
-    response.end();
-    };
-  //if url == "/...nothing..." && POST
-  	//redirect to /:username
+    // && GET
+    if (request.method.toLowerCase() === "get"){
+  		//show search field
+      response.writeHead(200, commonHeaders);
+      renderer.view("header", {}, response);
+      renderer.view("search", {}, response);
+      renderer.view("footer", {}, response);
+      response.end();
+    } else {
+      // && POST
+      request.on("data", function (postRequestBody){
+        //extract username
+        var query = querystring.parse(postRequestBody.toString());
+        //redirect to username url
+        response.writeHead(303, {'Location':'/' + query.username});
+        response.end();
+      })
+    }
+  }
 }
 
 // Handel HTTP route GET /:username i.e /chalkers
@@ -24,7 +34,7 @@ function user(request, response) {
 	//if url == "/..somehthing..."
   var username = request.url.replace("/", "");
   if (username.length>0) {
-    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.writeHead(200, commonHeaders);
     renderer.view("header", {}, response);
 
 		//get json from Treehouse
