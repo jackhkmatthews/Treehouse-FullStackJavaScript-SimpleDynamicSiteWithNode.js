@@ -9,7 +9,7 @@ function home(request, response){
   //if url == "/...nothing..." && GET
   if (request.url === "/") {
 		//show search field
-    // response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.writeHead(200, {'Content-Type': 'text/plain'});
     renderer.view("header", {}, response);
     renderer.view("search", {}, response);
     renderer.view("footer", {}, response);
@@ -24,6 +24,7 @@ function user(request, response) {
 	//if url == "/..somehthing..."
   var username = request.url.replace("/", "");
   if (username.length>0) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
     renderer.view("header", {}, response);
 
 		//get json from Treehouse
